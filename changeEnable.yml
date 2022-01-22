@@ -1,0 +1,13 @@
+---
+- name: Change Enable Password on All Devices
+  hosts: all
+  gather_facts: false
+  connection: network_cli
+
+  tasks:
+    - name: Change Enable PW
+      ios_config:
+        lines:
+          - "enable secret {{ enablePW }}"
+      register: print_output
+    - debug: var=print_output
