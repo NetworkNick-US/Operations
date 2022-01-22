@@ -1,0 +1,20 @@
+---
+- name: Configure /etc/resolv.conf
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Remove immutable attibute from resolv.conf
+      command: chattr -i /etc/resolv.conf
+
+    - name: Edit/replace contents of /etc/resolv.conf
+      copy:
+        content: |
+           domain:
+           nameserver {{ dns_server1 }}
+           nameserver {{ dns_server2 }}
+        dest: /etc/resolv.conf
+        owner: root
+        group: root
+        mode: 0444
+        attributes: +i
