@@ -10,4 +10,3 @@
         backup: yes
         backup_options:
           dir_path: "./backup/{{ inventory_hostname }}"
-#      register: backup_location
