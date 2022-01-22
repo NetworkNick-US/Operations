@@ -5,7 +5,7 @@ A collection of my frequently used scripts and playbooks. This collection contai
 
 Script              | Features | Purpose
 :-------------         | ------------- | -------------
-[icmpMonitor](127.0.0.1) |  Basic ICMP monitoring script for use in small isolated environments. | Created for non-network administrators or power-users to improve situational awarness when other monitoring tools (SolarWinds, Nagios, etc.) are not available.
+[icmpMonitor](https://github.com/NetworkNick-io/Operations/tree/main/ICMPmonitor) |  Basic ICMP monitoring script for use in small isolated environments. | Created for non-network administrators or power-users to improve situational awarness when other monitoring tools (SolarWinds, Nagios, etc.) are not available.
 
 ## Ansible Playbooks
 Playbook              | Features | Purpose
