@@ -1,11 +1,11 @@
 ---
-- name: Backup Configurations
+- name: Backup Network Device Configurations
   hosts: all
   connection: network_cli
   gather_facts: false
 
   tasks:
-    - name: backup configuration
+    - name: Get Configuration and Save Locally
       ios_config:
         backup: yes
         backup_options:
