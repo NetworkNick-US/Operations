@@ -1,7 +1,7 @@
 ---
 - name: Backup Configurations
   hosts: all
-  connection: local
+  connection: network_cli
   gather_facts: false
 
   tasks:
