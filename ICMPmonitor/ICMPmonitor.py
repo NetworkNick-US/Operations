@@ -40,7 +40,7 @@ def pingHost(dictionaryName, host):
 try:
     os.system("")
     while(True):
-        openHostList("Home Devices.json",5)
+        openHostList("Network Devices.json",5)
         
 except KeyboardInterrupt:
     clearConsole()
