@@ -1,0 +1,19 @@
+---
+- name: Configure NTP Servers
+  hosts: ALL
+  gather_facts: false
+  connection: network_cli
+
+  tasks:
+    - name: Configuring NTP Keys from Ansible-Vault
+      ios_config:
+        lines:
+          - "ntp authentication-key {{ item.keyNumb }} md5 {{ item.MD5Key }}"
+          - "ntp trusted-key {{ item.keyNumb }}"
+      loop: "{{ NTP_Keys }}"
+
+    - name: Configuring NTP Servers
+      ios_config:
+        lines:
+          - "ntp server {{ item.Server }} key {{ item.keyNumber }}"
+      loop: "{{ NTP_Servers }}"
