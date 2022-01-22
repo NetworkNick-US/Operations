@@ -1,5 +1,5 @@
 # OperationalItems
-A collection of my vetted and frequently used scripts and playbooks. This collection contains both Python and Ansible scripts that have found various uses within my personal or professional roles. Variable files are not included in the initial release of this public repository.
+A collection of my frequently used scripts and playbooks. This collection contains both Python and Ansible scripts that have found various uses within my personal or professional roles. Variable files are not included in the initial release of this public repository.
 
 ## Python Scripts
 
