@@ -10,7 +10,7 @@
     - name: Edit/replace contents of /etc/resolv.conf
       copy:
         content: |
-           domain:
+           domain: local.ad
            nameserver {{ dns_server1 }}
            nameserver {{ dns_server2 }}
         dest: /etc/resolv.conf
