@@ -1,5 +1,3 @@
-#Credit to @cdschr1 for the play and Tower support!
-
 ---
 - name: Configure /etc/resolv.conf
   hosts: all
