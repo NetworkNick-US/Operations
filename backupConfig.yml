@@ -1,12 +1,44 @@
 ---
-- name: Backup Network Device Configurations
-  hosts: all
+- name: Verify directories exist for config backup
+  hosts: localhost
+  connection: local
+  gather_facts: true
+
+  tasks:
+    - name: Directory task
+      file:
+        path: "./ConfigBackup/{{ item }}"
+        state: directory
+      loop: "{{ All_Net_Devices }}"
+
+- name: Backup and Save for IOS and IOS XE
+  hosts: IOS, IOSXE
   connection: network_cli
   gather_facts: false
 
   tasks:
-    - name: Get Configuration and Save Locally
+    - name: Backup IOS and IOS XE Configs
       ios_config:
         backup: yes
         backup_options:
-          dir_path: "./backup/{{ inventory_hostname }}/"
+          - dir_path: "./ConfigBackup/{{ inventory_hostname }}"
+
+    - name: Save Config on IOS and IOS XE Devices
+      ios_config:
+        save_when: always
+
+- name: Backup and Save for NXOS
+  hosts: NXOS
+  connection: network_cli
+  gather_facts: false
+
+  tasks:
+    - name: Backup NXOS Configs
+      nxos_config:
+        backup: yes
+        backup_options:
+          - dir_path: "./ConfigBackup/{{ inventory_hostname }}"
+
+    - name: Save Config on NXOS Devices
+      nxos_config:
+        save_when: always
