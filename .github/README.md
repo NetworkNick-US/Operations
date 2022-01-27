@@ -15,3 +15,6 @@ Playbook              | Features | Purpose | External Citation/Collaboration
 [setupNTP](https://github.com/NetworkNick-io/Operations/blob/main/setupNTP.yml) | Configures NTP with MD5 keys on Cisco network devices. | Configure the routers and switches for a newly deployed NTP server or for when new NTP keys have to be deployed. | -
 [resolv.conf](https://github.com/NetworkNick-io/Operations/blob/main/resolvCONF.yml) | Configure /etc/resolv.conf on hosts to enable DNS services. | Enable central DNS configuration control and functionality within a statically configured enclave that lacks general DHCP services. | [cdschr1](https://github.com/cdschr1)
 createLocalAdmin | Create a local administrator account on all Cisco network devices | Create or change the local fallback administrator account's password on all network devices. | -
+
+## Requirements
+[RFC 1925](https://datatracker.ietf.org/doc/html/rfc1925)
