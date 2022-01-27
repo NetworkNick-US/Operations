@@ -8,7 +8,7 @@ Script              | Features | Purpose
 [icmpMonitor](https://github.com/NetworkNick-io/Operations/tree/main/ICMPmonitor) |  Basic ICMP monitoring script for use in small isolated environments. | Created for non-network administrators or power-users to improve situational awarness when other monitoring tools (SolarWinds, Nagios, etc.) are not available.
 
 ## Ansible Playbooks
-Playbook              | Features | Purpose | External Citation
+Playbook              | Features | Purpose | External Citation/Collaboration
 :-------------         | ------------- | ------------- | -------------:
 [backupConfiguration](https://github.com/NetworkNick-io/Operations/blob/main/backupConfig.yml) |  Backup the running-configuration of Cisco network devices. | Create backups of running-configuration files to improve RPO in the event of device failure or replacement when ran systemically with a product like Ansible Tower. | -
 [changeEnable](https://github.com/NetworkNick-io/Operations/blob/main/changeEnable.yml) | Changes the enable password on Cisco network devices. | Change the shared enable password when an employee leaves or transfers to another department or organization on a network which does not drop privledged users at the enable prompt on login. | -
