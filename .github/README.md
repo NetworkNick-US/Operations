@@ -6,6 +6,8 @@ A collection of frequently used scripts and playbooks. This collection contains 
 Script              | Features | Purpose
 :-------------         | ------------- | -------------
 [icmpMonitor](https://github.com/NetworkNick-io/Operations/tree/main/ICMPmonitor) |  Basic ICMP monitoring script for use in small isolated environments. | Created for non-network administrators or power-users to improve situational awarness when other monitoring tools (SolarWinds, Nagios, etc.) are not available.
+[hashPW](https://github.com/NetworkNick-US/Operations/blob/main/hashPW.py) | Basic script to hash passwords (MD5) for use on Cisco IOS and IOS XE Ansible playbooks. | Supporting file to produce an MD5 hash for the fallback admin password for [createLocalAdmin](127.0.0.1).
+
 
 ## Ansible Playbooks
 Playbook              | Features | Purpose | External Citation/Collaboration
