@@ -1,0 +1,39 @@
+---
+- name:  Create a local administrative account on IOS and IOS XE Devices
+  hosts: IOS, IOSXE
+  gather_facts: false
+  connection: network_cli
+
+  tasks:
+    - name: Create IOS and IOS XE Account
+      ios_user:
+        name: "{{ fallbackAdmin }}"
+        password_type: secret
+        hashed_password:
+          type: 5
+          value: "{{ fallbackAdminPW }}"
+        privilege: 15
+        state: present
+        update_password: always
+
+    - name: Save Config on IOS and IOS XE Devices
+      ios_config:
+        save_when: always
+
+- name:  Create a local administrative account on NXOS Devices
+  hosts: NXOS
+  gather_facts: false
+  connection: network_cli
+
+  tasks:
+    - name: Create NXOS Account
+      nxos_user:
+        name: "{{ fallbackAdmin }}"
+        configured_password: "{{ fallbackAdminPW_clear }}"
+        roles: network-admin
+        state: present
+        update_password: always
+
+    - name: Save Config on NXOS Devices
+      nxos_config:
+        save_when: always
