@@ -22,7 +22,7 @@ def hashPass(salted,pwd):
 
 try:
     os.system("")
-    print("This script will help you hash a password for use with your Ansible playbooks for IOS and IOS XE devices.\n", style.RED, "PLEASE NOTE: CURRENTLY NXOS_USER REQUIRES CLEAR-TEXT PASSWORDS", style.RESET)
+    print("This script will help you hash a password for use with your Ansible playbooks for IOS and IOS XE devices.\n", style.RED, "PLEASE NOTE: CURRENTLY, THE NXOS_USER ANSIBLE MODULE REQUIRES CLEAR-TEXT PASSWORDS", style.RESET)
     salt = getpass.getpass(prompt="Please enter a random string as your salt: ", stream=None)
     userpasswd = getpass.getpass(prompt="Password: ", stream=None)
     print("The value you should be using for your variable 'fallbackAdminPW' is: " + hashPass(salt,userpasswd))
