@@ -19,7 +19,7 @@ processSourcer | Script which gets the results of lsof to help identify which us
 | [resolv.conf](https://github.com/NetworkNick-io/Operations/blob/main/resolvCONF.yml) | Configure /etc/resolv.conf on hosts to enable DNS services. | Enable central DNS configuration control and functionality within a statically configured enclave that lacks general DHCP services. | [cdschr1](https://github.com/cdschr1) |
 | [createLocalAdmin](https://github.com/NetworkNick-US/Operations/blob/main/createAdmin.yml) | Create a local administrator account on all Cisco network devices | Create or change the local fallback administrator account's password on all network devices. | - |
 | [removeLocalAdmin](https://github.com/NetworkNick-US/Operations/blob/main/removeLocalAdmin.yml) | Remove local accounts on Cisco network devices | Removes local accounts of previously authorized users who no longer need or are granted access and saves the confiugration. | - |
-
+|[controlFeatures.yml](https://github.com/NetworkNick-US/LearningAnsible/blob/main/playbooks/controlFeatures.yml) | Installs the appropriate features on Nexus switches. | Streamline deployment by ensuring Cisco Nexus switches have all of the relevent featuers that are required. | ✔️ |
 
 ## Requirements
 [RFC 1925](https://datatracker.ietf.org/doc/html/rfc1925)
