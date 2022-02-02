@@ -1,4 +1,8 @@
-import os,subprocess,getpass,platform
+import getpass
+import os
+import platform
+import subprocess
+
 
 class style():
     BLACK = '\033[30m'
@@ -13,20 +17,24 @@ class style():
     RESET = '\033[0m'
     BLUEBACKGROUND = '\x1b[1;37;46m'
 
+
 def clearConsole():
     clearCon = 'cls' if platform.system().lower() == "windows" else 'clear'
     os.system(clearCon)
 
-def hashPass(salted,pwd):
+
+def hashPass(salted, pwd):
     return subprocess.getoutput("openssl passwd -salt " + salted + " -1 " + pwd)
+
 
 try:
     os.system("")
     print("This script will help you hash a password for use with your Ansible playbooks for IOS and IOS XE devices.\n"
-        + style.RED + "PLEASE NOTE: CURRENTLY,THE NXOS_USER ANSIBLE MODULE REQUIRES CLEAR-TEXT PASSWORDS", style.RESET)
+          + style.RED + "PLEASE NOTE: CURRENTLY,THE NXOS_USER ANSIBLE MODULE REQUIRES CLEAR-TEXT PASSWORDS",
+          style.RESET)
     salt = getpass.getpass(prompt="Please enter a random string as your salt: ", stream=None)
     userpasswd = getpass.getpass(prompt="Password: ", stream=None)
-    print("The value you should be using for your variable 'fallbackAdminPW' is: " + hashPass(salt,userpasswd))
+    print("The value you should be using for your variable 'fallbackAdminPW' is: " + hashPass(salt, userpasswd))
     input(style.BLUE + "\nVisit NetworkNick.___ for more Ansible and Python tools!\n" + style.RESET)
 
 except KeyboardInterrupt:
