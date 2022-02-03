@@ -6,7 +6,7 @@ A collection of frequently used scripts and playbooks. This collection contains 
 Script              | Features | Purpose
 :-------------         | ------------- | -------------
 [icmpMonitor](https://github.com/NetworkNick-io/Operations/tree/main/ICMPmonitor) |  Basic ICMP monitoring script for use in small isolated environments. | Created for non-network administrators or power-users to improve situational awarness when other monitoring tools (SolarWinds, Nagios, etc.) are not available.
-[hashPW](https://github.com/NetworkNick-US/Operations/blob/main/hashPW.py) | Basic script to hash passwords (MD5) for use on Cisco IOS and IOS XE Ansible playbooks. | Supporting file to produce an MD5 hash for the fallback admin password for [createLocalAdmin](127.0.0.1).
+[hashPW](https://github.com/NetworkNick-US/Operations/blob/main/hashPW.py) | Basic script to hash passwords (MD5) for use on Cisco IOS and IOS XE Ansible playbooks. | Supporting file to produce an MD5 hash for the fallback admin password for [createLocalAdmin](https://github.com/NetworkNick-US/Operations/blob/main/createAdmin.yml).
 [processSourcer](https://github.com/NetworkNick-US/Operations/blob/main/rogueTCP.py) | Script which gets the results of lsof to help identify which user or process is responsible for the traffic in question. Ran from the CLI and output piped into a file for easy searching later. | Traffic flows were being dropped by upstream network access controls while no users were signed into the machine in question. Due to the upstream provider having loud dropping (client system notified), tools such as lsof and netstat did hold information pertinent to the data flow for any significant period of time.
 
 
