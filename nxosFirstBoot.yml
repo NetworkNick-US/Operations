@@ -1,0 +1,223 @@
+---
+- name: Nexus Device Management Features
+  hosts: newNexus
+  gather_facts: no
+  connection: network_cli
+  vars_files:
+    - ./vars/nexusSecurity.yml
+
+  tasks:
+    - name: Set Correct Hostname
+      nxos_config:
+        lines:
+          - "hostname {{ properHostname }}"
+
+    - name: Enable desired features
+      nxos_feature:
+        feature: "{{ item }}"
+        state: enabled
+      loop: "{{ goodFeatures }}"
+
+    - name: Remove unncessary/unsecure features
+      nxos_feature:
+        feature: "{{ item }}"
+        state: disabled
+      loop: "{{ badFeatures }}"
+
+    - name: FIPS mode, Password Strength, and Failed Login Blocking
+      nxos_config:
+        lines:
+          - fips mode enable
+          - password strength-check
+          - login block-for 900 attempts 3 within 180
+
+    - name: Configure Enable Password
+      nxos_config:
+        lines:
+          - "enable secret {{ enableSecret }}"
+
+    - name: Setup Login Banner
+      nxos_banner:
+        banner: motd
+        text: "{{ lookup('file', './vars/companyBanner.cfg', errors='ignore') }}"
+        state: present
+
+    - name: Setup NTP with authentication keys
+      cisco.nxos.nxos_ntp_global:
+        config:
+          authenticate: yes
+          authentication_keys:
+            - id: "{{ item.keyNumber }}"
+              key: "{{ item.MD5key }}"
+              encryption: 0
+          trusted_keys:
+            - key_id: "{{ item.keyNumber }}"
+          servers:
+            - server: "{{ item.Server }}"
+              key_id: "{{ item.keyNumber }}"
+              use_vrf: default
+          logging: yes
+        state: merged
+      loop: "{{ NTP_Servers }}"
+
+    - name: Set Timezone
+      nxos_config:
+        lines:
+          - clock timezone EST -5 0
+
+    - name: Console Logging, Local Logfile, Timestamps, and Origin
+      cisco.nxos.nxos_logging_global:
+        config:
+          console:
+            severity: critical
+            state: enabled
+          monitor:
+            severity: critical
+            state: enabled
+          logfile:
+            name: lcllogs.txt
+            persistent_threshold: 75
+            severity: informational
+            size: 100000000
+            state: enabled
+          origin_id:
+            hostname: yes
+          timestamp: milliseconds
+        state: merged
+
+    - name: Syslog Servers
+      cisco.nxos.nxos_logging_global:
+        config:
+          hosts:
+            - host: "{{ item }}"
+              port: 514
+              severity: informational
+              use_vrf: default
+      loop: "{{ logServers }}"
+
+    - name: Setup ACL for VTY Lines (Permits)
+      cisco.nxos.nxos_acls:
+        config:
+          - afi: ipv4
+            acls:
+              - name: VTY_ACL
+                aces:
+                  - grant: permit
+                    protocol: tcp
+                    source:
+                      address: "{{ item.networkAddr }}"
+                      wildcard_bits: "{{ item.wildcardBits }}"
+                    destination:
+                      any: yes
+                      port_protocol:
+                        eq: 22
+        state: merged
+      loop: "{{ vtyAllowedSubnets }}"
+
+    - name: Setup ACL for VTY Lines (Log Deny Statement)
+      cisco.nxos.nxos_acls:
+        config:
+          - afi: ipv4
+            acls:
+              - name: VTY_ACL
+                aces:
+                  - grant: deny
+                    protocol: ip
+                    source:
+                      any: yes
+                    destination:
+                      any: yes
+                    log: yes
+
+    - name: VTY Line Confiugration - ACL, Session Limit, Timeout, Transport
+      nxos_config:
+        parents: "line vty"
+        lines:
+          - ip access-class VTY_ACL in
+          - "session-limit {{ vtySessionLimit }}"
+          - "exec-timeout {{ vtyTimeout }}"
+          - transport input SSH
+
+- name: Nexus Switch Functionality
+  hosts: newNexus
+  gather_facts: no
+  connection: network_cli
+  vars_files:
+    - ./vars/nexusConfig.yml
+
+  tasks:
+    - name: Create VLANs
+      nxos_vlans:
+        config:
+          - vlan_id: "{{ item.vlanID }}"
+            name: "{{ item.name }}"
+        state: merged
+      loop: "{{ VLANS }}"
+
+    - name: Enable IGMP Snooping
+      nxos_igmp_snooping:
+        snooping: true
+        state: present
+
+    - name: Explicitly Enable IGMP Snooping for Every VLAN
+      nxos_config:
+          lines:
+            - "ip igmp snooping vlan {{ item.vlanID }}"
+      loop: "{{ VLANS }}"
+
+    - name: Setup Access Ports
+      nxos_l2_interfaces:
+        config:
+          name: "ethernet {{ item.portNumber }}"
+          mode: access
+          access:
+            - vlan: "{{ item.accessVLAN }}"
+      loop: "{{ AccessPorts }}"
+
+    - name: Harden Access Ports - Storm Control, Port Security, STP
+      nxos_config:
+        parents: "interface ethernet {{ item.portNumber }}"
+        lines:
+          - switchport block unicast
+          - storm-control action shutdown
+          - "storm-control broadcast level {{ stormControlBroadcast }}"
+          - "storm-control multicast level {{ stormControlMulticast }}"
+          - "storm-control unicast level {{ stormControlUnicast }}"
+          - switchport port-security mac-address sticky
+          - switchport port-security violation shutdown
+          - "switchport port-security maximum {{ portSecMax }}"
+          - switchport port-security
+          - spanning-tree port type edge
+          - spanning-tree bpduguard enable
+          - spanning-tree guard root
+          - spanning-tree guard loop
+          - no shutdown
+      loop: "{{ AccessPorts }}"
+
+    - name: Auto-recover Security Shutdowns - Port-Security and Storm-Control
+      nxos_config:
+        lines:
+          - errdisable recovery cause storm-control
+          - errdisable recovery cause psecure-violation
+          - errdisable recovery interval 60
+
+    - name: Setup Trunk Ports
+      nxos_l2_interfaces:
+        config:
+          - name: "ethernet {{ item.portNumber }}"
+            mode: trunk
+            trunk:
+              - native_vlan: "{{ nativeVLAN }}"
+                allowed_vlans: "{{ item.allowedVLANList }}"
+      loop: "{{ TrunkPorts }}"
+
+    - name: Shutdown Unused Ports
+      nxos_config:
+        parents: "interface ethernet {{ item }}"
+        lines:
+          - shutdown
+      loop: "{{ shutdownPorts }}"
+
+    - name: Save Config When Complete
+      nxos_config:
+        save_when: always
