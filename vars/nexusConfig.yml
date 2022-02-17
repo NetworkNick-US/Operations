@@ -1,0 +1,33 @@
+VLANS:
+  - vlanID:
+    name:
+  - vlanID:
+    name:
+
+VoiceVLAN:
+unusedPortVLAN:
+
+stormControlBroadcast:
+stormControlMulticast:
+stormControlUnicast:
+
+AccessPorts:
+  - portNumber:
+    accessVLAN:
+  - portNumber:
+    accessVLAN:
+  - portNumber:
+    accessVLAN:
+  - portNumber:
+    accessVLAN:
+
+portSecMax:
+nativeVLAN:
+TrunkPorts:
+  - portNumber:
+    allowedVLANList:
+  - portNumber:
+    allowedVLANList:
+
+shutdownPorts:
+  -

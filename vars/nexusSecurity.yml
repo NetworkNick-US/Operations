@@ -1,0 +1,41 @@
+#This should be implemented as an Ansible-vault file
+goodFeatures:
+  - lacp
+  - ntp
+  - udld
+  - ospf
+  - ospfv3
+  - hsrp
+  - ssh
+  - interface-vlan
+  - scp-server
+  - port-security
+
+badFeatures:
+  - telnet
+  - wccp
+  - imp
+  - nxapi
+  - vtp
+
+properHostname:
+
+NTP_Servers:
+  - Server:
+    keyNumber:
+    MD5key:
+
+logServers:
+  -
+
+portSecMax:
+enableSecret:
+vtySessionLimit:
+vtyTimeout:
+vtyAllowedSubnets:
+  - networkAddr:
+    wildcardBits:
+  - networkAddr:
+    wildcardBits:
+  - networkAddr:
+    wildcardBits:
