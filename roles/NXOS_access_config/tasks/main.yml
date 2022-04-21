@@ -1,0 +1,10 @@
+---
+- name: Access Port Configuration
+  nxos_l2_interfaces:
+      config:
+        - name: "ethernet {{ item.portNumber }}"
+          access:
+            - vlan: "{{ item.VLAN }}"
+  loop: "{{ access_ports }}"
+  notify:
+    - access_port_changed
